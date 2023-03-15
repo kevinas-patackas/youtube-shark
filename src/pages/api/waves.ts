@@ -92,6 +92,7 @@ async function getVideosSinceLastChecked(
   const baseUrl = "https://youtube.googleapis.com/youtube/v3/search";
 
   const result: YoutubeWavesDisplayDetails[] = [];
+  let pagesSearched = 0;
 
   const searchVideos = async (pageToken?: string) => {
     const parameters = new URLSearchParams({
@@ -130,7 +131,8 @@ async function getVideosSinceLastChecked(
       }))
     );
 
-    if (videosList.nextPageToken) {
+    pagesSearched++;
+    if (videosList.nextPageToken && pagesSearched < 2) {
       await searchVideos(videosList.nextPageToken);
     }
   };
