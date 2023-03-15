@@ -78,6 +78,9 @@ export default async function handler(
     await postVideoDetailsToSlack(slackWebhookUrl, video, keywords);
   }
 
+  console.log(
+    `new videos found: ${sortedNewVideos.map((i) => i.id).join(", ")}`
+  );
   res.status(200).json(newVideos);
 }
 
