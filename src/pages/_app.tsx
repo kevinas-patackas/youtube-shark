@@ -1,10 +1,3 @@
-// import '@/styles/globals.css'
-// import type { AppProps } from 'next/app'
-
-// export default function App({ Component, pageProps }: AppProps) {
-//   return <Component {...pageProps} />
-// }
-
 import * as React from "react";
 import Head from "next/head";
 import { AppProps } from "next/app";
@@ -14,7 +7,6 @@ import { CacheProvider, EmotionCache } from "@emotion/react";
 import theme from "@/config/theme";
 import createEmotionCache from "@/config/createEmotionCache";
 
-// Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
 
 interface MyAppProps extends AppProps {
