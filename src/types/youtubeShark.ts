@@ -33,3 +33,19 @@ export interface YoutubeSharkCommentAuthor {
   imageUrl: string;
   channelUrl: string;
 }
+
+export enum YoutubeWavesFieldTypes {
+  LastCheckedDateTime = "lastCheckedDateTime",
+  Keywords = "keywords",
+}
+
+export interface YoutubeWavesData {
+  type: YoutubeWavesFieldTypes;
+  value: string;
+}
+
+export interface YoutubeWavesDisplayDetails {
+  id: string;
+  title: string;
+  publishedAt: string;
+}

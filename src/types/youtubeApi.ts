@@ -51,3 +51,16 @@ export interface YoutubeTopLevelComment {
     updatedAt: string;
   };
 }
+
+export interface YoutubeSearchListResponse {
+  nextPageToken?: string;
+  items: {
+    id: {
+      videoId: string;
+    };
+    snippet: {
+      publishedAt: string;
+      title: string;
+    };
+  }[];
+}
