@@ -16,7 +16,7 @@ export default function CommentsAccordion({
   return (
     <Accordion variant="outlined">
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-        <Typography fontWeight={theme.typography.fontWeightBold}>
+        <Typography component="h6" fontWeight={theme.typography.fontWeightBold}>
           {videoDetails.title}
           <Typography component="span"> ({videoDetails.id})</Typography>
         </Typography>

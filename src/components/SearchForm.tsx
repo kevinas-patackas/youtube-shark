@@ -58,7 +58,10 @@ export default function SearchForm({
   } = useForm<FormValues>({ resolver });
 
   const onSubmit = handleSubmit((data) => {
-    const result = data.videoIds.split(/ |,/).map((i) => i.trim());
+    const result = data.videoIds
+      .split(/ |,/)
+      .map((i) => i.trim())
+      .filter(Boolean);
     onSearch(result);
   });
 

@@ -2,50 +2,24 @@ import CommentsAccordion from "@/components/CommentsAccordion";
 import SearchForm from "@/components/SearchForm";
 import TitleBar from "@/components/TitleBar";
 import theme from "@/config/theme";
-import {
-  YoutubeSharkVideoCommentDetails,
-  YoutubeSharkVideoCommentDetailsApiResponse,
-} from "@/types/youtubeShark";
+import { useFetchVideoComments } from "@/hooks/useFetchVideoComments";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import Container from "@mui/material/Container";
-import { useState } from "react";
 
 export default function Home() {
-  const [loading, setLoading] = useState<boolean>(false);
-  const [videos, setVideos] = useState<YoutubeSharkVideoCommentDetails[]>([]);
-  const [notFoundVideos, setNotFoundVideos] = useState<string[]>([]);
-  const [error, setError] = useState<boolean>(false);
-
-  const fetchVideos = (videoIds: string[]) => {
-    setLoading(true);
-    const queryParams = new URLSearchParams({
-      videoId: videoIds.join(","),
-    });
-
-    fetch(`${process.env["NEXT_PUBLIC_APP_URL"]}/api/comments?${queryParams}`)
-      .then((response) => response.json())
-      .then((response: YoutubeSharkVideoCommentDetailsApiResponse) => {
-        setVideos(response.items);
-        setNotFoundVideos(response.notFound);
-        setError(false);
-        setLoading(false);
-      })
-      .catch(() => {
-        setError(true);
-        setLoading(false);
-      });
-  };
+  const { error, loading, videos, notFoundVideos, fetchVideoComments } =
+    useFetchVideoComments();
 
   return (
     <>
-      <TitleBar>Youtube Surfing Shark</TitleBar>
+      <TitleBar title="Youtube Surfing Shark" />
       <Container maxWidth="md" sx={{ pb: 12 }}>
         <Box sx={{ my: 4 }}>
           <Card variant="outlined" sx={{ p: 4 }}>
-            <SearchForm onSearch={fetchVideos} loading={loading} />
+            <SearchForm onSearch={fetchVideoComments} loading={loading} />
           </Card>
         </Box>
 

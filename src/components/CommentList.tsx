@@ -28,11 +28,12 @@ export default function CommentList({
             <Box sx={{ p: 1 }}>
               <Typography
                 variant="body1"
+                component="h3"
                 fontWeight={theme.typography.fontWeightBold}
               >
                 {comment.author.name}
               </Typography>
-              <Typography variant="subtitle2">
+              <Typography variant="subtitle2" component="p">
                 {DateTime.fromISO(comment.publishedAt).toRelative({
                   locale: "en-US",
                 })}
