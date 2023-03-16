@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
-import TitleBar from "../TitleBar";
+import TitleBar from "../../components/TitleBar";
 
 describe("TitleBar", () => {
   it("should display given title", () => {

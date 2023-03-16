@@ -1,7 +1,7 @@
 import { useFetchVideoComments } from "@/hooks/useFetchVideoComments";
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
-import Home from "../index";
+import Home from "../../pages/index";
 
 jest.mock("../../hooks/useFetchVideoComments", () => {
   return {

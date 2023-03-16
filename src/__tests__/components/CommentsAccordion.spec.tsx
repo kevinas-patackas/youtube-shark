@@ -1,8 +1,8 @@
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
-import CommentsAccordion from "../CommentsAccordion";
+import CommentsAccordion from "../../components/CommentsAccordion";
 
-jest.mock("../CommentList", () => "mock-comment-list");
+jest.mock("../../components/CommentList", () => "mock-comment-list");
 
 describe("CommentsAccordion", () => {
   describe("not cached video", () => {

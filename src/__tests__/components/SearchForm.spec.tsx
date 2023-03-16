@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import SearchForm from "../SearchForm";
+import SearchForm from "../../components/SearchForm";
 
 describe("SearchForm", () => {
   const onSearchMock = jest.fn();

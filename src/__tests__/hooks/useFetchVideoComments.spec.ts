@@ -1,6 +1,6 @@
 import { renderHook, waitFor } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
-import { useFetchVideoComments } from "../useFetchVideoComments";
+import { useFetchVideoComments } from "../../hooks/useFetchVideoComments";
 
 describe("useFetchVideoComments", () => {
   let fetchMock: jest.Mock;

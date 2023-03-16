@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import * as MockDate from "mockdate";
-import CommentList from "../CommentList";
+import CommentList from "../../components/CommentList";
 
 describe("CommentList", () => {
   describe("no comments available", () => {
