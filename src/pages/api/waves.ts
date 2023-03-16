@@ -7,6 +7,7 @@ import {
 import { DateTime } from "luxon";
 import { Db, MongoClient } from "mongodb";
 import type { NextApiRequest, NextApiResponse } from "next";
+import { logger } from "@/utils/logger";
 
 export default async function handler(
   _req: NextApiRequest,
@@ -25,7 +26,7 @@ export default async function handler(
     !collectionName ||
     !slackWebhookUrl
   ) {
-    console.error("Application is not configured");
+    logger.error("Application is not configured");
     res.status(500).end("Application is not configured");
     return;
   }
@@ -40,7 +41,7 @@ export default async function handler(
   let keywords = lastCheckedAtAndKeywordsInDb.keywords;
 
   if (!keywords) {
-    console.error("keywords are missing in database");
+    logger.error("keywords are missing in database");
     res.status(400).end("keywords are missing in database");
     return;
   }
@@ -78,7 +79,7 @@ export default async function handler(
     await postVideoDetailsToSlack(slackWebhookUrl, video, keywords);
   }
 
-  console.log(
+  logger.info(
     `new videos found: ${sortedNewVideos.map((i) => i.id).join(", ")}`
   );
   res.status(200).json(newVideos);
@@ -117,7 +118,7 @@ async function getVideosSinceLastChecked(
         return null;
       }
 
-      console.error(`HTTP Request failed with code: ${apiResponse.status}`);
+      logger.error(`HTTP Request failed with code: ${apiResponse.status}`);
       throw new Error(`HTTP Request failed with code: ${apiResponse.status}`);
     }
 

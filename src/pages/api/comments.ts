@@ -12,26 +12,27 @@ import {
 import type { NextApiRequest, NextApiResponse } from "next";
 import { MongoClient, Db } from "mongodb";
 import { DateTime } from "luxon";
+import { logger } from "@/utils/logger";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<YoutubeSharkVideoCommentDetailsApiResponse>
 ) {
-  console.log(`incoming event with query: ${JSON.stringify(req.query)}`);
+  logger.info(`incoming event with query: ${JSON.stringify(req.query)}`);
   const youtubeApiKey = process.env["YOUTUBE_API_KEY"];
   const mongoUri = process.env["MONGODB_URI"];
   const databaseName = process.env["MONGODB_DATABASE_NAME"];
   const collectionName = process.env["MONGODB_COMMENTS_COLLECTION"];
 
   if (!youtubeApiKey || !mongoUri || !databaseName || !collectionName) {
-    console.error("Application is not configured");
+    logger.error("Application is not configured");
     res.status(500).end("Application is not configured");
     return;
   }
 
   const { videoId } = req.query;
   if (typeof videoId !== "string") {
-    console.error("videoId query parameter is missing");
+    logger.error("videoId query parameter is missing");
     res.status(400).end("videoId query parameter is missing");
     return;
   }
@@ -42,10 +43,10 @@ export default async function handler(
     const notFound: string[] = [];
 
     const db = await getDatabaseConnection(mongoUri, databaseName);
-    console.log("database connection initialized");
+    logger.info("database connection initialized");
 
     for (const id of videoIds) {
-      console.log(`getting videoId ${id} data from mongo`);
+      logger.info(`getting videoId ${id} data from mongo`);
       const cachedVideoComments = await getCachedDataFromMongo(
         db,
         collectionName,
@@ -53,7 +54,7 @@ export default async function handler(
       );
 
       if (cachedVideoComments) {
-        console.log(`videoId ${id} retrieved from mongo`);
+        logger.info(`videoId ${id} retrieved from mongo`);
         items.push({
           id: cachedVideoComments.id,
           title: cachedVideoComments.title,
@@ -64,17 +65,17 @@ export default async function handler(
         continue;
       }
 
-      console.log(`videoId ${id} not found in mongo cache`);
-      console.log(`getting videoId ${id} video data from youtube API`);
+      logger.info(`videoId ${id} not found in mongo cache`);
+      logger.info(`getting videoId ${id} video data from youtube API`);
       const videoDetails = await getVideoDetails(id, youtubeApiKey);
 
       if (!videoDetails) {
-        console.log(`videoId ${id} not found in youtube`);
+        logger.info(`videoId ${id} not found in youtube`);
         notFound.push(id);
         continue;
       }
 
-      console.log(`getting videoId ${id} comments data from youtube API`);
+      logger.info(`getting videoId ${id} comments data from youtube API`);
       const comments = await getVideoComments(id, youtubeApiKey);
       const result: YoutubeSharkVideoCommentDetails = {
         id: videoDetails.id,
@@ -83,7 +84,7 @@ export default async function handler(
       };
 
       items.push(result);
-      console.log(`saving videoId ${id} to mongo`);
+      logger.info(`saving videoId ${id} to mongo`);
       await cacheDataToMongo(db, collectionName, result);
     }
 
@@ -122,7 +123,7 @@ async function getVideoComments(
       return [];
     }
 
-    console.error(`HTTP Request failed with code: ${apiResponse.status}`);
+    logger.error(`HTTP Request failed with code: ${apiResponse.status}`);
     throw new Error(`HTTP Request failed with code: ${apiResponse.status}`);
   }
 
@@ -177,7 +178,7 @@ async function getVideoDetails(
       return null;
     }
 
-    console.error(`HTTP Request failed with code: ${apiResponse.status}`);
+    logger.error(`HTTP Request failed with code: ${apiResponse.status}`);
     throw new Error(`HTTP Request failed with code: ${apiResponse.status}`);
   }
 
